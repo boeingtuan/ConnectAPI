@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Connect API</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="email">Email của bạn</string>
+    <string name="password">Mật khẩu</string>
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký mới</string>
+    <string name="title_app">Connect to API app</string>
+    <string name="login_title">Đăng ký tài khoản</string>
+    <string name="confirm_pass">Nhập lại mật khẩu</string>
+    <string name="username">Tên tài khoản</string>
+</resources>
