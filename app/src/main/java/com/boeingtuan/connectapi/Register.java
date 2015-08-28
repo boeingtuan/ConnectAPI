@@ -11,10 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Tuan on 04/08/2015.
  */
 public class Register extends Activity {
+
+    private static final String url_register = "http://54.148.141.223/task_manager/v1/register";
 
     private ProgressDialog pdialog;
 
@@ -23,6 +32,10 @@ public class Register extends Activity {
     EditText inputPass;
     EditText inputPassConfirm;
     Button btnReg;
+
+    JSONParser jsonParser =  new JSONParser();
+    JSONObject jsonReg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,20 +79,44 @@ public class Register extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             pdialog = new ProgressDialog(Register.this);
-            pdialog.setMessage("Ðang t?o tài kho?n. Vui l?ng ch? ...");
+            pdialog.setMessage("Ðang tao tài khoan. Vui long cho ...");
             pdialog.setIndeterminate(false);
             pdialog.setCancelable(false);
             pdialog.show();
         }
 
+        /**
+         * checking authorization
+         */
+
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(String... args) {
+            String email = inputEmail.getText().toString();
+            String pass =  inputPass.getText().toString();
+            String usrname = inputName.getText().toString();
+
+            // Building parameters
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("name", usrname));
+            params.add(new BasicNameValuePair("email", email));
+            params.add(new BasicNameValuePair("password", pass));
+
+            // Getting JSON object - Post method
+            jsonReg = jsonParser.makeHttpRequest(url_register, "POST", params);
+
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             pdialog.dismiss();
+
+            if (jsonReg != null && !jsonReg.optBoolean("error")) {
+                Toast.makeText(getApplicationContext(), "Tao tai khoan thanh cong", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), "Tao tai khoan ko thanh cong", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
